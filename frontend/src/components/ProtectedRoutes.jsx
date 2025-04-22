@@ -6,12 +6,12 @@ const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  // If not logged in, redirect to login
+ 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Automatically redirect based on role when accessing /dashboard
+  
   if (location.pathname === "/dashboard") {
     switch (user.role) {
       case "admin":
@@ -25,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
     }
   }
 
-  // Allow access to protected route
+  
   return children;
 };
 

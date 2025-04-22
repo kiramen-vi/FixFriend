@@ -21,7 +21,7 @@ const protect = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // ✅ Attach essential fields explicitly to ensure consistency
+    
     req.user = {
       id: user._id.toString(),
       name: user.name,
@@ -31,7 +31,7 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error('❌ JWT verification failed:', err.message);
+    console.error('JWT verification failed:', err.message);
     res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };

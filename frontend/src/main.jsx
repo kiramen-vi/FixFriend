@@ -10,7 +10,7 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter> {/* ✅ Wrap everything in BrowserRouter */}
+  <BrowserRouter> 
     <AuthProvider>
       <App />
     </AuthProvider>

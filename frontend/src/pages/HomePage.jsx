@@ -37,7 +37,7 @@ const HomePage = () => {
         </div>
 
         <div className="row justify-content-center g-4">
-          {/* Register */}
+          
           <div className="col-12 col-md-6">
             <div
               className="card h-100 shadow border-0"
@@ -64,7 +64,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Login */}
+      
           <div className="col-12 col-md-6">
             <div
               className="card h-100 shadow border-0"
@@ -93,7 +93,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Footer */}
+      
       <footer
         className="text-center mt-4 p-3"
         style={{

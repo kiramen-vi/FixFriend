@@ -29,7 +29,7 @@ const TechnicianDashboard = () => {
       setCompletedServices(completedRes.data);
     } catch (err) {
       console.error("Error loading technician data:", err);
-      toast.error("❌ Failed to load services.");
+      toast.error(" Failed to load services.");
     } finally {
       setLoading(false);
     }
@@ -52,9 +52,9 @@ const TechnicianDashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchData();
-      toast[action === "accept" ? "success" : "warn"](`✅ Service ${action}ed!`);
+      toast[action === "accept" ? "success" : "warn"](` Service ${action}ed!`);
     } catch (err) {
-      toast.error("❌ Action failed: " + (err.response?.data?.message || err.message));
+      toast.error(" Action failed: " + (err.response?.data?.message || err.message));
     }
   };
 
@@ -73,9 +73,9 @@ const TechnicianDashboard = () => {
       });
 
       fetchData();
-      toast.success("🎉 Service marked as completed!");
+      toast.success(" Service marked as completed!");
     } catch (err) {
-      toast.error("❌ Failed to complete service: " + (err.response?.data?.message || err.message));
+      toast.error(" Failed to complete service: " + (err.response?.data?.message || err.message));
     } finally {
       setUpdatingId(null);
     }
@@ -106,7 +106,7 @@ const TechnicianDashboard = () => {
           color: "#ffffff",
         }}
       >
-        {/* Header */}
+      
         <div className="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style={{ backgroundColor: "#00192F" }}>
           <div>
             <h2 className="fw-bold text-light">Technician Dashboard</h2>
@@ -118,7 +118,7 @@ const TechnicianDashboard = () => {
           </div>
         </div>
 
-        {/* Tabs */}
+      
         <ul className="nav nav-tabs mb-4" style={{ borderBottom: "2px solid #B7D3F4" }}>
           {["assigned", "completed"].map((tab) => (
             <li className="nav-item" key={tab}>
@@ -137,7 +137,7 @@ const TechnicianDashboard = () => {
           ))}
         </ul>
 
-        {/* Content */}
+        
         {loading ? (
           <div className="text-center my-5">
             <div className="spinner-border text-warning"></div>
@@ -213,7 +213,7 @@ const TechnicianDashboard = () => {
                             style={{ maxHeight: 200 }}
                             onError={(e) => {
                               e.target.style.display = "none";
-                              console.warn("🛑 Failed to load image:", imageUrl);
+                              console.warn(" Failed to load image:", imageUrl);
                             }}
                           />
                         )}

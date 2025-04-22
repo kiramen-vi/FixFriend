@@ -10,7 +10,7 @@ const createServiceRequest = async (req, res) => {
       }
   
       const service = await ServiceRequest.create({
-        client: req.user.id, // ✅ FIXED here
+        client: req.user.id, 
         title,
         description,
         serviceType,
@@ -22,13 +22,13 @@ const createServiceRequest = async (req, res) => {
         service,
       });
     } catch (error) {
-      console.error("❌ Error creating service request:", error);
+      console.error(" Error creating service request:", error);
       res.status(500).json({ message: "Failed to submit service request." });
     }
   };
   
 
-// ✅ Get client’s own service requests
+
 const getClientServices = async (req, res) => {
   try {
     const services = await ServiceRequest.find({ client: req.user._id })
@@ -36,12 +36,12 @@ const getClientServices = async (req, res) => {
 
     res.status(200).json(services);
   } catch (error) {
-    console.error("❌ Error fetching client services:", error);
+    console.error(" Error fetching client services:", error);
     res.status(500).json({ message: "Failed to load services." });
   }
 };
 
-// ✅ Technician sees assigned services
+
 const getTechnicianServices = async (req, res) => {
   try {
     const services = await ServiceRequest.find({
@@ -51,12 +51,12 @@ const getTechnicianServices = async (req, res) => {
 
     res.status(200).json(services);
   } catch (error) {
-    console.error("❌ Error fetching technician services:", error);
+    console.error(" Error fetching technician services:", error);
     res.status(500).json({ message: "Failed to load assigned services." });
   }
 };
 
-// ✅ Technician closes a service (with image, feedback, rating)
+
 const closeService = async (req, res) => {
   try {
     const { feedback, rating } = req.body;
@@ -82,12 +82,12 @@ const closeService = async (req, res) => {
 
     res.status(200).json({ message: "Service marked as completed", service });
   } catch (error) {
-    console.error("❌ Error closing service:", error);
+    console.error(" Error closing service:", error);
     res.status(500).json({ message: "Failed to close service." });
   }
 };
 
-// ✅ Admin assigns technician to service
+
 const assignTechnician = async (req, res) => {
   try {
     const { technicianId } = req.body;
@@ -108,7 +108,7 @@ const assignTechnician = async (req, res) => {
 
     res.status(200).json({ message: "Technician assigned", service });
   } catch (error) {
-    console.error("❌ Error assigning technician:", error);
+    console.error(" Error assigning technician:", error);
     res.status(500).json({ message: "Failed to assign technician" });
   }
 };

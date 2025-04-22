@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
-const User = require('./src/models/User'); // adjust path if needed
+const User = require('./src/models/User'); 
 require('dotenv').config();
 
 const seedAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
-    // Delete existing admin
+   
     await User.deleteMany({ role: 'admin' });
 
-    // Let Mongoose hash the password using pre-save hook
+
     await User.create({
       name: 'Admin User',
       email: 'admin@fixfriend.com',
@@ -18,11 +18,11 @@ const seedAdmin = async () => {
       role: 'admin',
     });
 
-    console.log('✅ Admin user created with password: admin123');
+    console.log(' Admin user created with password: admin123');
 
     mongoose.disconnect();
   } catch (error) {
-    console.error('❌ Error seeding admin:', error.message);
+    console.error(' Error seeding admin:', error.message);
     process.exit(1);
   }
 };

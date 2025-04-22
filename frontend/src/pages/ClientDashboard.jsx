@@ -53,14 +53,14 @@ const ClientDashboard = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-      setRequestMessage("✅ Service request submitted.");
+      setRequestMessage(" Service request submitted.");
       setTitle("");
       setDescription("");
       fetchRequests();
       setTimeout(() => setRequestMessage(""), 3000);
     } catch (err) {
       console.error(err);
-      setRequestMessage("❌ Failed to submit request.");
+      setRequestMessage(" Failed to submit request.");
       setTimeout(() => setRequestMessage(""), 3000);
     }
   };
@@ -101,7 +101,7 @@ const ClientDashboard = () => {
     if (!fbText || rating < 1 || rating > 5) {
       return setFeedbackMessages((prev) => ({
         ...prev,
-        [serviceId]: "❌ Please enter valid feedback and rating.",
+        [serviceId]: " Please enter valid feedback and rating.",
       }));
     }
     try {
@@ -114,14 +114,14 @@ const ClientDashboard = () => {
       );
       setFeedbackMessages((prev) => ({
         ...prev,
-        [serviceId]: "✅ Feedback submitted.",
+        [serviceId]: " Feedback submitted.",
       }));
       setFeedbacks((prev) => ({ ...prev, [serviceId]: { text: "", rating: 5 } }));
       fetchRequests();
     } catch (err) {
       setFeedbackMessages((prev) => ({
         ...prev,
-        [serviceId]: "❌ Failed to submit feedback.",
+        [serviceId]: " Failed to submit feedback.",
       }));
     }
   };
@@ -157,7 +157,7 @@ const ClientDashboard = () => {
           color: palette.light,
         }}
       >
-        {/* Header */}
+        
         <div className="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style={{ backgroundColor: palette.dark }}>
           <div>
             <h2 className="fw-bold text-light">Client Dashboard</h2>
@@ -169,7 +169,7 @@ const ClientDashboard = () => {
           </div>
         </div>
 
-        {/* Tabs */}
+       
         <ul className="nav nav-tabs mb-4" style={{ borderBottom: `2px solid ${palette.blue}` }}>
           {[
             { key: "new", label: "New Request" },
@@ -193,7 +193,7 @@ const ClientDashboard = () => {
           ))}
         </ul>
 
-        {/* New Request */}
+       
         {activeTab === "new" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow mb-4">
             <h4 className="text-info">Create Service Request</h4>
@@ -206,7 +206,7 @@ const ClientDashboard = () => {
           </div>
         )}
 
-        {/* Open Requests */}
+    
         {activeTab === "open" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-info">My Open Requests</h4>
@@ -224,12 +224,12 @@ const ClientDashboard = () => {
           </div>
         )}
 
-        {/* Feedback */}
+        
         {activeTab === "feedback" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-warning">Feedback for Completed Services</h4>
 
-            {/* To Submit */}
+           
             {completedRequests.filter((r) => !r.feedback).length === 0 ? (
               <p>No services pending feedback.</p>
             ) : (
@@ -256,7 +256,7 @@ const ClientDashboard = () => {
               ))
             )}
 
-            {/* Submitted */}
+            
             {completedRequests.filter((r) => r.feedback).length > 0 && (
               <div className="mt-4">
                 <h5 className="text-info">My Submitted Feedback</h5>
@@ -275,7 +275,7 @@ const ClientDashboard = () => {
           </div>
         )}
 
-        {/* History */}
+       
         {activeTab === "history" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-success">Completed Service History</h4>
@@ -301,7 +301,7 @@ const ClientDashboard = () => {
                         style={{ maxHeight: 200 }}
                         onError={(e) => {
                           e.target.style.display = "none";
-                          console.warn("🛑 Failed to load client image:", imageUrl);
+                          console.warn("Failed to load client image:", imageUrl);
                         }}
                       />
                     )}
@@ -321,7 +321,7 @@ const ClientDashboard = () => {
         )}
       </div>
 
-      {/* Sleek Footer */}
+
       <footer
         style={{
           width: "100%",

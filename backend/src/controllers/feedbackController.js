@@ -1,7 +1,7 @@
 const Feedback = require('../models/FeedBack');
 const Service = require('../models/ServiceRequest');
 
-// ✅ Client submits feedback for a completed service
+
 const submitFeedback = async (req, res) => {
   const { serviceId, rating, feedback } = req.body;
 
@@ -11,7 +11,7 @@ const submitFeedback = async (req, res) => {
       return res.status(404).json({ message: 'Service not found' });
     }
 
-    // Create new feedback document
+   
     const fb = await Feedback.create({
       service: serviceId,
       client: req.user._id,
@@ -20,7 +20,7 @@ const submitFeedback = async (req, res) => {
       feedback,
     });
 
-    // ✅ Link feedback to service request
+    
     service.feedback = fb._id;
     await service.save();
 
@@ -29,12 +29,11 @@ const submitFeedback = async (req, res) => {
       feedback: fb,
     });
   } catch (err) {
-    console.error('❌ Error in submitFeedback:', err);
+    console.error(' Error in submitFeedback:', err);
     res.status(500).json({ message: 'Failed to submit feedback.' });
   }
 };
 
-// ✅ Technician views all feedback received (optional usage)
 const getTechnicianFeedback = async (req, res) => {
   try {
     const feedbacks = await Feedback.find({ technician: req.user._id })
@@ -43,7 +42,7 @@ const getTechnicianFeedback = async (req, res) => {
 
     res.status(200).json(feedbacks);
   } catch (err) {
-    console.error('❌ Error in getTechnicianFeedback:', err);
+    console.error(' Error in getTechnicianFeedback:', err);
     res.status(500).json({ message: 'Failed to load feedback.' });
   }
 };

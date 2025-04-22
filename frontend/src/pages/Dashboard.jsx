@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-vh-100 bg-light">
-      {/* Navbar */}
+      
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 py-3 mb-4">
         <div className="container-fluid">
           <span className="navbar-brand fw-bold text-primary">🔧 ServicePro</span>
@@ -34,13 +34,13 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+    
       <div className="container py-5">
         <div className="row align-items-center">
-          {/* Left Text */}
+         
           <div className="col-md-6 mb-4 mb-md-0">
             <h1 className="display-5 fw-bold mb-3">
-              Welcome, {user.name}! 👋<br />
+              Welcome, {user.name}! <br />
               Let’s manage your dashboard
             </h1>
             <p className="lead text-muted mb-4">
@@ -54,7 +54,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Right Image */}
+        
           <div className="col-md-6 text-center">
             <img
               src="https://www.svgrepo.com/show/331470/horse-mail.svg"
@@ -66,13 +66,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Footer */}
+      
       <footer className="text-center py-4">
         <div className="d-flex justify-content-center flex-wrap gap-4 text-muted fw-semibold">
-          <span>🔧 Eureka</span>
-          <span>⚙️ QuickFix</span>
-          <span>🔩 RepairMax</span>
-          <span>🛠️ FixIt</span>
+          <span> Eureka</span>
+          <span> QuickFix</span>
+          <span> RepairMax</span>
+          <span>FixIt</span>
         </div>
       </footer>
     </div>

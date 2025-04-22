@@ -22,7 +22,7 @@ const ClientIntro = () => {
         position: "relative",
       }}
     >
-      {/* Overlay */}
+     
       <div
         style={{
           position: "absolute",
@@ -32,7 +32,7 @@ const ClientIntro = () => {
         }}
       />
 
-      {/* Content */}
+      
       <Container style={{ maxWidth: "850px", zIndex: 1 }}>
         <Card className="p-5 shadow-lg rounded-4 border-0 bg-light bg-opacity-75">
           <h1 className="text-center fw-bold mb-3 text-primary">Welcome to FixFriend</h1>
@@ -65,7 +65,7 @@ const ClientIntro = () => {
         </Card>
       </Container>
 
-      {/* Footer */}
+      
       <footer
         style={{
           width: "100%",

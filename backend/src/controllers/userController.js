@@ -3,7 +3,7 @@ const ServiceRequest = require('../models/ServiceRequest');
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
-// ✅ Login user & get token
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -26,7 +26,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Admin: Get all users
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
@@ -54,14 +54,14 @@ const getClientRequests = async (req, res) => {
         status: 'Completed',
       })
         .populate('technician', 'name email')
-        .populate('feedback'); // ✅ THIS LINE is what was missing
+        .populate('feedback');
   
       res.status(200).json({
         openRequests,
         completedRequests,
       });
     } catch (error) {
-      console.error("❌ Error in getClientRequests:", error);
+      console.error(" Error in getClientRequests:", error);
       res.status(500).json({ message: 'Failed to fetch service requests.' });
     }
   };

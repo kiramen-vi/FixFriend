@@ -2,7 +2,7 @@ const User = require('../models/User');
 const ServiceRequest = require('../models/ServiceRequest');
 const Feedback = require('../models/FeedBack');
 
-// Admin Dashboard: Clients, Technicians, Feedbacks, Segmented Services
+
 const getDashboardData = async (req, res) => {
   try {
     const clients = await User.find({ role: 'client' });
@@ -38,7 +38,7 @@ const getDashboardData = async (req, res) => {
   }
 };
 
-// Create a technician
+
 const createTechnician = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -52,7 +52,11 @@ const createTechnician = async (req, res) => {
   }
 };
 
-// Create a client
+
+
+
+
+
 const createClient = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -66,7 +70,7 @@ const createClient = async (req, res) => {
   }
 };
 
-// Delete technician or client
+
 const deleteTechnician = async (req, res) => {
   try {
     const technician = await User.findOneAndDelete({ _id: req.params.id, role: 'technician' });
@@ -87,7 +91,7 @@ const deleteClient = async (req, res) => {
   }
 };
 
-// Create a service request
+
 const createServiceRequest = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -107,7 +111,7 @@ const createServiceRequest = async (req, res) => {
   }
 };
 
-// Delete service request
+
 const deleteServiceRequest = async (req, res) => {
   try {
     const deleted = await ServiceRequest.findByIdAndDelete(req.params.id);
@@ -118,7 +122,7 @@ const deleteServiceRequest = async (req, res) => {
   }
 };
 
-// Assign technician
+
 const assignTechnician = async (req, res) => {
     try {
       const serviceId = req.params.id;

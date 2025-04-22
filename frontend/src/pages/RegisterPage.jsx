@@ -55,7 +55,7 @@ const RegisterPage = () => {
           color: "#C1E8FF",
         }}
       >
-        {/* Logo + Heading */}
+     
         <div className="text-center mb-4">
           <img src="/logo.jpg" alt="Logo" className="mb-2" style={{ height: "50px" }} />
           <h2 className="fw-bold">Create Account</h2>
@@ -143,12 +143,12 @@ const RegisterPage = () => {
         </form>
       </div>
 
-     {/* Footer */}
+     
      <footer
   style={{
     width: "100%",
     padding: "1rem 0",
-    background: "rgba(2, 16, 36, 0.75)", // Semi-transparent navy background
+    background: "rgba(2, 16, 36, 0.75)", 
     color: "#C1E8FF",
     textAlign: "center",
     fontSize: "0.95rem",

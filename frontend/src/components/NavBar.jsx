@@ -17,7 +17,7 @@ const NavBar = () => {
       style={{ backgroundColor: "#365A82" }}
     >
       <div className="container-fluid px-4">
-        {/* Logo + Brand */}
+       
         <Link className="navbar-brand d-flex align-items-center text-light fw-bold" to="/">
           <img
             src="/logo.jpg"
@@ -29,7 +29,7 @@ const NavBar = () => {
           FixFriend
         </Link>
 
-        {/* Hamburger Toggle */}
+        
         <button
           className="navbar-toggler border-light"
           type="button"
@@ -42,7 +42,7 @@ const NavBar = () => {
           <span className="navbar-toggler-icon" />
         </button>
 
-        {/* Navigation Links */}
+        
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav align-items-center gap-3">
             {!user ? (

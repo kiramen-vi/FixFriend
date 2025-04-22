@@ -6,7 +6,7 @@ const PrivateRoutes = () => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <p>Loading...</p>; // Show loading until auth state is determined
+    return <p>Loading...</p>; 
   }
 
   return user ? <Outlet /> : <Navigate to="/login" />;

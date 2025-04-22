@@ -9,7 +9,7 @@ const {
   updateServiceStatusWithImage,
 } = require('../controllers/technicianController');
 
-// Routes for technician
+
 router.get('/assigned', protect, isTechnician, getAssignedServices);
 router.get('/completed', protect, isTechnician, getCompletedServices);
 router.put(

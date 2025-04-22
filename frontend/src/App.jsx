@@ -15,7 +15,7 @@ import TechnicianDashboard from "./pages/TechnicianDashboard";
 import PrivateRoute from "./components/ProtectedRoutes";
 import ClientIntro from "./pages/ClientIntro";
 
-// ✅ Role-Based Redirect Component
+
 function RoleBasedRedirect() {
   const { user } = useContext(AuthContext);
 
@@ -33,7 +33,7 @@ function RoleBasedRedirect() {
   }
 }
 
-// ✅ 404 Not Found Page
+
 function NotFound() {
   return (
     <Container className="text-center mt-5">
@@ -52,12 +52,12 @@ function App() {
       <NavBar />
       <Container className="mt-4">
         <Routes>
-          {/* Public Routes */}
+         
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Routes */}
+         
           <Route
             path="/admin-dashboard"
             element={
@@ -99,12 +99,12 @@ function App() {
             }
           />
 
-          {/* Catch-All for 404 */}
+        
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
 
-      {/* 🔔 Toast container for feedback messages */}
+     
       <ToastContainer position="top-right" autoClose={3000} />
     </>
   );

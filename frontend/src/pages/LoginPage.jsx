@@ -124,7 +124,7 @@ const LoginPage = () => {
         </form>
       </div>
 
-      {/* 🔻 Sleek Footer */}
+      
       <footer
         style={{
           width: "100%",
