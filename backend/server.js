@@ -9,50 +9,38 @@ connectDB();
 
 const app = express();
 
-
 const allowedOrigins = [
-    'http://localhost:5173',
-    'https://fix-friend.vercel.app',
-  ];
-  
-  app.use(cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  }));
-  
-  
-  
+  'http://localhost:5173',
+  'https://fix-friend.vercel.app',
+];
+
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
+
+
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(express.json());
-
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 const authRoutes = require('./src/routes/authRoutes');
-console.log(' authRoutes is:', typeof authRoutes);
-
 const userRoutes = require('./src/routes/userRoutes');
-console.log(' userRoutes is:', typeof userRoutes);
-
 const serviceRoutes = require('./src/routes/serviceRoutes');
-console.log(' serviceRoutes is:', typeof serviceRoutes);
-
 const technicianRoutes = require('./src/routes/technicianRoutes');
-console.log(' technicianRoutes is:', typeof technicianRoutes);
-
 const adminRoutes = require('./src/routes/adminRoutes');
-console.log(' adminRoutes is:', typeof adminRoutes);
-
 const feedbackRoutes = require('./src/routes/feedbackRoutes');
-console.log(' feedbackRoutes is:', typeof feedbackRoutes);
-
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
@@ -69,7 +57,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname1, 'client', 'dist', 'index.html'))
   );
 }
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
