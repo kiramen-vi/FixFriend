@@ -9,28 +9,17 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://fix-friend.vercel.app',
-];
-
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-}));
+    origin: true, // Reflects request origin
+    credentials: true
+  }));
 
-
-app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
-
+  app.options('*', cors({
+    origin: true,
+    credentials: true
+  }));
+  
+  
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
