@@ -28,7 +28,7 @@ const technicianRoutes = require('./src/routes/technicianRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const feedbackRoutes = require('./src/routes/feedbackRoutes');
 
-// ✅ Use routes
+// ✅ Mount routes
 app.use('/api/auth', authRoutes);
 console.log('✅ /api/auth route loaded');
 
@@ -47,12 +47,19 @@ console.log('✅ /api/admin route loaded');
 app.use('/api/feedback', feedbackRoutes);
 console.log('✅ /api/feedback route loaded');
 
-// ✅ Test route (for debugging Render deployment)
+// ✅ Ping route for testing
 app.get('/api/auth/ping', (req, res) => {
+  console.log("✅ /api/auth/ping was hit");
   res.send('pong');
 });
 
-// ✅ Serve frontend for production
+// ✅ Route debug middleware (optional but useful)
+app.use((req, res, next) => {
+  console.log(`❌ Unmatched Route: ${req.method} ${req.originalUrl}`);
+  res.status(404).send('Not Found');
+});
+
+// ✅ Serve frontend in production
 const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname1, '/client/dist')));
