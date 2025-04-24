@@ -9,28 +9,35 @@ connectDB();
 
 const app = express();
 
+// 🔥 Debug Logs
+console.log("🔥 SERVER STARTING...");
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("__dirname:", __dirname);
+
 // ✅ CORS Setup
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://fix-friend.vercel.app'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // 💥 Allow preflight for all routes
+app.options('*', cors(corsOptions)); // Preflight requests
 
+// ✅ JSON Parsing
 app.use(express.json());
 
 // ✅ Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ Import routes
-const authRoutes = require('./src/routes/authRoutes');
-const userRoutes = require('./src/routes/userRoutes');
-const serviceRoutes = require('./src/routes/serviceRoutes');
-const technicianRoutes = require('./src/routes/technicianRoutes');
-const adminRoutes = require('./src/routes/adminRoutes');
-const feedbackRoutes = require('./src/routes/feedbackRoutes');
+// ✅ Route imports (absolute-safe for Render)
+const authRoutes = require(path.join(__dirname, 'src', 'routes', 'authRoutes'));
+const userRoutes = require(path.join(__dirname, 'src', 'routes', 'userRoutes'));
+const serviceRoutes = require(path.join(__dirname, 'src', 'routes', 'serviceRoutes'));
+const technicianRoutes = require(path.join(__dirname, 'src', 'routes', 'technicianRoutes'));
+const adminRoutes = require(path.join(__dirname, 'src', 'routes', 'adminRoutes'));
+const feedbackRoutes = require(path.join(__dirname, 'src', 'routes', 'feedbackRoutes'));
 
-// ✅ Use routes
+// ✅ Mount routes
 app.use('/api/auth', authRoutes);
 console.log('✅ /api/auth route loaded');
 
@@ -49,12 +56,12 @@ console.log('✅ /api/admin route loaded');
 app.use('/api/feedback', feedbackRoutes);
 console.log('✅ /api/feedback route loaded');
 
-// ✅ Basic root route for Render pings
+// ✅ Health check route
 app.get('/', (req, res) => {
   res.send('FixFriend API is live.');
 });
 
-// ✅ Handle unmatched routes (optional)
+// ✅ 404 fallback handler
 app.use((req, res) => {
   console.log(`❌ Unmatched route: ${req.method} ${req.originalUrl}`);
   res.status(404).send('Not Found');
