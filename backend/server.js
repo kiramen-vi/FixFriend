@@ -20,18 +20,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 const authRoutes = require('./src/routes/authRoutes');
-//const userRoutes = require('./src/routes/userRoutes');
-//const serviceRoutes = require('./src/routes/serviceRoutes');
-//const technicianRoutes = require('./src/routes/technicianRoutes');
-//const adminRoutes = require('./src/routes/adminRoutes');
-//const feedbackRoutes = require('./src/routes/feedbackRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const serviceRoutes = require('./src/routes/serviceRoutes');
+const technicianRoutes = require('./src/routes/technicianRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
+const feedbackRoutes = require('./src/routes/feedbackRoutes');
 
 app.use('/api/auth', authRoutes);
-//app.use('/api/user', userRoutes);
-//app.use('/api/service', serviceRoutes);
-//app.use('/api/technician', technicianRoutes);
-//app.use('/api/admin', adminRoutes);
-//app.use('/api/feedback', feedbackRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/service', serviceRoutes);
+app.use('/api/technician', technicianRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 
 const __dirname1 = path.resolve();
