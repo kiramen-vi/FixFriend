@@ -15,6 +15,8 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // 💥 Allow preflight for all routes
+
 app.use(express.json());
 
 // ✅ Static folder for uploads
@@ -28,7 +30,7 @@ const technicianRoutes = require('./src/routes/technicianRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const feedbackRoutes = require('./src/routes/feedbackRoutes');
 
-// ✅ Mount routes
+// ✅ Use routes
 app.use('/api/auth', authRoutes);
 console.log('✅ /api/auth route loaded');
 
@@ -47,15 +49,14 @@ console.log('✅ /api/admin route loaded');
 app.use('/api/feedback', feedbackRoutes);
 console.log('✅ /api/feedback route loaded');
 
-// ✅ Ping route for testing
-app.get('/api/auth/ping', (req, res) => {
-  console.log("✅ /api/auth/ping was hit");
-  res.send('pong');
+// ✅ Basic root route for Render pings
+app.get('/', (req, res) => {
+  res.send('FixFriend API is live.');
 });
 
-// ✅ Route debug middleware (optional but useful)
-app.use((req, res, next) => {
-  console.log(`❌ Unmatched Route: ${req.method} ${req.originalUrl}`);
+// ✅ Handle unmatched routes (optional)
+app.use((req, res) => {
+  console.log(`❌ Unmatched route: ${req.method} ${req.originalUrl}`);
   res.status(404).send('Not Found');
 });
 
@@ -68,6 +69,5 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
