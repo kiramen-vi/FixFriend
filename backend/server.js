@@ -16,13 +16,19 @@ console.log("__dirname:", __dirname);
 
 // ✅ CORS Setup (fixed for Vercel + preflight)
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://fix-friend.vercel.app'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // handle preflight requests
+    origin: [
+      'http://localhost:5173',
+      'https://fix-friend-kiramen-vis-projects.vercel.app',
+      'https://fix-friend-git-main-kiramen-vis-projects.vercel.app'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  };
+  
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions)); // preflight handling
+  
 
 // ✅ JSON Parsing
 app.use(express.json());
