@@ -11,12 +11,13 @@ const seedAdmin = async () => {
     await User.deleteMany({ role: 'admin' });
 
 
-    await User.create({
-      name: 'Admin User',
-      email: 'admin@fixfriend.com',
-      password: 'admin123',
-      role: 'admin',
-    });
+    const newAdmin = new User({
+        name: 'Admin User',
+        email: 'admin@fixfriend.com',
+        password: 'admin123',
+        role: 'admin',
+      });
+      await newAdmin.save();
 
     console.log(' Admin user created with password: admin123');
 

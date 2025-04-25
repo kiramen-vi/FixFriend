@@ -28,16 +28,18 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
+    if (!this.isModified('password')) return next();
+  
+    try {
+      console.log("Hashing password for:", this.email); // 👈 Add this
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+  
 
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
