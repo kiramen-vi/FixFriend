@@ -1,29 +1,27 @@
 const mongoose = require('mongoose');
-const User = require('./src/models/User'); 
-require('dotenv').config();
+const dotenv = require('dotenv');
+const User = require('./src/models/User'); // ✅ fixed path
+const connectDB = require('./src/config/db'); // ✅ fixed path
+
+dotenv.config();
+connectDB();
 
 const seedAdmin = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log(' Connected to MongoDB');
+    await User.deleteMany({ email: 'admin@fixfriend.com' });
 
-   
-    await User.deleteMany({ role: 'admin' });
+    const admin = new User({
+      name: 'Admin',
+      email: 'admin@fixfriend.com',
+      password: 'admin123',
+      role: 'admin'
+    });
 
-
-    const newAdmin = new User({
-        name: 'Admin User',
-        email: 'admin@fixfriend.com',
-        password: 'admin123',
-        role: 'admin',
-      });
-      await newAdmin.save();
-
-    console.log(' Admin user created with password: admin123');
-
-    mongoose.disconnect();
+    await admin.save();
+    console.log('✅ Admin seeded with password: admin123');
+    process.exit();
   } catch (error) {
-    console.error(' Error seeding admin:', error.message);
+    console.error('❌ Seeding failed:', error.message);
     process.exit(1);
   }
 };
