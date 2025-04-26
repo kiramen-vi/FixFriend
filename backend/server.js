@@ -14,21 +14,21 @@ console.log("🔥 SERVER STARTING...");
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log("__dirname:", __dirname);
 
-// ✅ CORS Setup (fixed for Vercel + preflight)
+// ✅ CORS Setup (final fixed version)
 const corsOptions = {
-    origin: [
-      'http://localhost:5173',
-      'https://fix-friend-kiramen-vis-projects.vercel.app',
-      'https://fix-friend-git-main-kiramen-vis-projects.vercel.app'
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  };
-  
-  app.use(cors(corsOptions));
-  app.options('*', cors(corsOptions)); // preflight handling
-  
+  origin: [
+    'http://localhost:5173', 
+    'https://fix-friend.vercel.app', 
+    'https://fix-friend-kiramen-vis-projects.vercel.app',
+    'https://fix-friend-git-main-kiramen-vis-projects.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // handle preflight requests
 
 // ✅ JSON Parsing
 app.use(express.json());
@@ -36,7 +36,7 @@ app.use(express.json());
 // ✅ Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ Route imports (absolute-safe for Render)
+// ✅ Route imports
 const authRoutes = require(path.join(__dirname, 'src', 'routes', 'authRoutes'));
 const userRoutes = require(path.join(__dirname, 'src', 'routes', 'userRoutes'));
 const serviceRoutes = require(path.join(__dirname, 'src', 'routes', 'serviceRoutes'));
@@ -83,5 +83,6 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
