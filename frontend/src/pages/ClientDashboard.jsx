@@ -21,11 +21,11 @@ const ClientDashboard = () => {
     light: "#C1E8FF",
   };
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get("/api/user/my-requests", {
+      const res = await axios.get(`${API_BASE_URL}/api/user/my-requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setOpenRequests(res.data.openRequests || []);
@@ -47,20 +47,20 @@ const ClientDashboard = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "/api/service/request-service",
+        `${API_BASE_URL}/api/service/request-service`,
         { title, description },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-      setRequestMessage(" Service request submitted.");
+      setRequestMessage("Service request submitted.");
       setTitle("");
       setDescription("");
       fetchRequests();
       setTimeout(() => setRequestMessage(""), 3000);
     } catch (err) {
       console.error(err);
-      setRequestMessage(" Failed to submit request.");
+      setRequestMessage("Failed to submit request.");
       setTimeout(() => setRequestMessage(""), 3000);
     }
   };
@@ -73,6 +73,38 @@ const ClientDashboard = () => {
         [field]: field === "rating" ? Number(value) : value,
       },
     }));
+  };
+
+  const submitFeedback = async (e, serviceId) => {
+    e.preventDefault();
+    const fbText = feedbacks[serviceId]?.text || "";
+    const rating = feedbacks[serviceId]?.rating || 0;
+    if (!fbText || rating < 1 || rating > 5) {
+      return setFeedbackMessages((prev) => ({
+        ...prev,
+        [serviceId]: "Please enter valid feedback and rating.",
+      }));
+    }
+    try {
+      await axios.post(
+        `${API_BASE_URL}/api/feedback`,
+        { serviceId, feedback: fbText, rating },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      setFeedbackMessages((prev) => ({
+        ...prev,
+        [serviceId]: "Feedback submitted.",
+      }));
+      setFeedbacks((prev) => ({ ...prev, [serviceId]: { text: "", rating: 5 } }));
+      fetchRequests();
+    } catch (err) {
+      setFeedbackMessages((prev) => ({
+        ...prev,
+        [serviceId]: "Failed to submit feedback.",
+      }));
+    }
   };
 
   const renderStarRating = (serviceId, currentRating) => (
@@ -93,38 +125,6 @@ const ClientDashboard = () => {
       ))}
     </div>
   );
-
-  const submitFeedback = async (e, serviceId) => {
-    e.preventDefault();
-    const fbText = feedbacks[serviceId]?.text || "";
-    const rating = feedbacks[serviceId]?.rating || 0;
-    if (!fbText || rating < 1 || rating > 5) {
-      return setFeedbackMessages((prev) => ({
-        ...prev,
-        [serviceId]: " Please enter valid feedback and rating.",
-      }));
-    }
-    try {
-      await axios.post(
-        "/api/feedback",
-        { serviceId, feedback: fbText, rating },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      setFeedbackMessages((prev) => ({
-        ...prev,
-        [serviceId]: " Feedback submitted.",
-      }));
-      setFeedbacks((prev) => ({ ...prev, [serviceId]: { text: "", rating: 5 } }));
-      fetchRequests();
-    } catch (err) {
-      setFeedbackMessages((prev) => ({
-        ...prev,
-        [serviceId]: " Failed to submit feedback.",
-      }));
-    }
-  };
 
   const getFeedbackText = (fb) => {
     if (!fb) return "No comment provided.";
@@ -157,7 +157,6 @@ const ClientDashboard = () => {
           color: palette.light,
         }}
       >
-        
         <div className="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style={{ backgroundColor: palette.dark }}>
           <div>
             <h2 className="fw-bold text-light">Client Dashboard</h2>
@@ -169,7 +168,6 @@ const ClientDashboard = () => {
           </div>
         </div>
 
-       
         <ul className="nav nav-tabs mb-4" style={{ borderBottom: `2px solid ${palette.blue}` }}>
           {[
             { key: "new", label: "New Request" },
@@ -193,7 +191,7 @@ const ClientDashboard = () => {
           ))}
         </ul>
 
-       
+        {/* New Request Tab */}
         {activeTab === "new" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow mb-4">
             <h4 className="text-info">Create Service Request</h4>
@@ -206,7 +204,7 @@ const ClientDashboard = () => {
           </div>
         )}
 
-    
+        {/* Open Requests Tab */}
         {activeTab === "open" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-info">My Open Requests</h4>
@@ -224,16 +222,14 @@ const ClientDashboard = () => {
           </div>
         )}
 
-        
+        {/* Feedback Tab */}
         {activeTab === "feedback" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-warning">Feedback for Completed Services</h4>
-
-           
-            {completedRequests.filter((r) => !r.feedback).length === 0 ? (
+            {completedRequests.filter(r => !r.feedback).length === 0 ? (
               <p>No services pending feedback.</p>
             ) : (
-              completedRequests.filter((r) => !r.feedback).map((req) => (
+              completedRequests.filter(r => !r.feedback).map((req) => (
                 <div key={req._id} className="p-3 my-2 bg-light text-dark rounded">
                   <p><strong>Title:</strong> {req.title}</p>
                   <p><strong>Technician:</strong> {req.technician?.name || "N/A"}</p>
@@ -255,27 +251,10 @@ const ClientDashboard = () => {
                 </div>
               ))
             )}
-
-            
-            {completedRequests.filter((r) => r.feedback).length > 0 && (
-              <div className="mt-4">
-                <h5 className="text-info">My Submitted Feedback</h5>
-                {completedRequests.filter((r) => r.feedback).map((r) => (
-                  <div key={r._id} className="card my-3">
-                    <div className="card-body">
-                      <p><strong>Client:</strong> {user?.name}</p>
-                      <p><strong>Technician:</strong> {r.technician?.name || "N/A"}</p>
-                      <p><strong>Rating:</strong> {"⭐".repeat(r.feedback?.rating || 0)}</p>
-                      <p><strong>Comment:</strong> {getFeedbackText(r.feedback)}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
-       
+        {/* History Tab */}
         {activeTab === "history" && (
           <div className="bg-white bg-opacity-10 p-4 rounded shadow">
             <h4 className="text-success">Completed Service History</h4>
@@ -283,10 +262,9 @@ const ClientDashboard = () => {
               <p>No completed services yet.</p>
             ) : (
               completedRequests.map((req) => {
-                const imageUrl = `${API_BASE_URL.replace(/\/api$/, "")}${req.closureImage?.startsWith("/") ? req.closureImage : "/" + req.closureImage}`;
+                const imageUrl = `${API_BASE_URL.replace("/api", "")}${req.closureImage}`;
                 const feedbackText = getFeedbackText(req.feedback);
                 const ratingStars = req.feedback?.rating ? "⭐".repeat(Number(req.feedback.rating)) : "No rating given.";
-
                 return (
                   <div key={req._id} className="p-3 my-2 bg-light text-dark rounded">
                     <p><strong>Title:</strong> {req.title}</p>
@@ -299,10 +277,6 @@ const ClientDashboard = () => {
                         alt="Service Closure"
                         className="img-fluid rounded mt-2"
                         style={{ maxHeight: 200 }}
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                          console.warn("Failed to load client image:", imageUrl);
-                        }}
                       />
                     )}
                     {req.feedback ? (
@@ -320,7 +294,6 @@ const ClientDashboard = () => {
           </div>
         )}
       </div>
-
 
       <footer
         style={{
