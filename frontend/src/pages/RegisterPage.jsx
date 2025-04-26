@@ -26,7 +26,8 @@ const RegisterPage = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", userData);
+      const API = import.meta.env.VITE_API_URL;
+      await axios.post(`${API}/api/auth/register`, userData);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
@@ -55,7 +56,6 @@ const RegisterPage = () => {
           color: "#C1E8FF",
         }}
       >
-     
         <div className="text-center mb-4">
           <img src="/logo.jpg" alt="Logo" className="mb-2" style={{ height: "50px" }} />
           <h2 className="fw-bold">Create Account</h2>
@@ -143,35 +143,31 @@ const RegisterPage = () => {
         </form>
       </div>
 
-     
-     <footer
-  style={{
-    width: "100%",
-    padding: "1rem 0",
-    background: "rgba(2, 16, 36, 0.75)", 
-    color: "#C1E8FF",
-    textAlign: "center",
-    fontSize: "0.95rem",
-    backdropFilter: "blur(8px)",
-    boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.4)",
-    marginTop: "4rem",
-  }}
->
-  <div>
-    <div style={{ fontWeight: "600", fontSize: "1.1rem", color: "#B7D3F4" }}>
-      🔧 FixFriend <span style={{ fontWeight: "400" }}>– Reliable Service Starts Here</span>
-    </div>
-    <div style={{ marginTop: "0.3rem" }}>
-      &copy; {new Date().getFullYear()} FixFriend. All rights reserved.
-    </div>
-    <div style={{ fontSize: "0.85rem", color: "#A8CBE8" }}>
-      v1.0.0 – Empowering clients & technicians
-    </div>
-  </div>
-</footer>
-
-
-
+      <footer
+        style={{
+          width: "100%",
+          padding: "1rem 0",
+          background: "rgba(2, 16, 36, 0.75)",
+          color: "#C1E8FF",
+          textAlign: "center",
+          fontSize: "0.95rem",
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.4)",
+          marginTop: "4rem",
+        }}
+      >
+        <div>
+          <div style={{ fontWeight: "600", fontSize: "1.1rem", color: "#B7D3F4" }}>
+            🔧 FixFriend <span style={{ fontWeight: "400" }}>– Reliable Service Starts Here</span>
+          </div>
+          <div style={{ marginTop: "0.3rem" }}>
+            &copy; {new Date().getFullYear()} FixFriend. All rights reserved.
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "#A8CBE8" }}>
+            v1.0.0 – Empowering clients & technicians
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
