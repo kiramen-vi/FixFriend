@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
 
 const AdminDashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -23,7 +21,7 @@ const AdminDashboard = () => {
   const API = import.meta.env.VITE_API_URL;
 
   const fetchData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const res = await axios.get(`${API}/api/admin/dashboard`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -37,9 +35,8 @@ const AdminDashboard = () => {
       setFeedbacks(res.data.feedbacks || []);
     } catch (err) {
       console.error("Error fetching admin data:", err);
-      toast.error("Failed to fetch dashboard data.");
     }
-    setLoading(false); // Stop loading
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -49,8 +46,6 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) logout();
   };
-
-  const renderStars = (rating) => "⭐".repeat(rating);
 
   const handleCreateUser = async () => {
     const { name, email, password, role } = newUser;
@@ -62,10 +57,10 @@ const AdminDashboard = () => {
       fetchData();
       setShowModal(false);
       setNewUser({ name: "", email: "", password: "", role: "technician" });
-      toast.success(`${role} created successfully!`);
+      alert(`${role} created`);
     } catch (err) {
       console.error(err);
-      toast.error("Error creating user.");
+      alert("Error creating user.");
     }
   };
 
@@ -76,10 +71,8 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       fetchData();
-      toast.success(`${role} deleted successfully!`);
     } catch (err) {
       console.error(err);
-      toast.error("Error deleting user.");
     }
   };
 
@@ -90,10 +83,8 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       fetchData();
-      toast.success("Service request deleted!");
     } catch (err) {
       console.error(err);
-      toast.error("Error deleting service request.");
     }
   };
 
@@ -105,15 +96,9 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       fetchData();
-      toast.success("Technician assigned successfully!");
     } catch (err) {
       console.error(err);
-      toast.error("Error assigning technician.");
     }
-  };
-
-  const getImageUrl = (path) => {
-    return `${API}${path}`;
   };
 
   const tabs = [
@@ -135,17 +120,120 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div className="admin-dashboard-container">
-      <ToastContainer />
+    <div className="admin-dashboard-container p-4">
       {loading ? (
-        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "90vh" }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       ) : (
         <>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2>Admin Dashboard</h2>
+            <button onClick={handleLogout} className="btn btn-danger">Logout</button>
+          </div>
 
+          <ul className="nav nav-tabs mb-4">
+            {tabs.map(tab => (
+              <li className="nav-item" key={tab.key}>
+                <button
+                  className={`nav-link ${activeTab === tab.key ? "active" : ""}`}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  {tab.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div>
+            {activeTab === "users" && (
+              <div className="row">
+                <div className="col-md-6">
+                  <h5>Technicians</h5>
+                  <input type="text" className="form-control mb-2" placeholder="Search technician..." value={techSearch} onChange={(e) => setTechSearch(e.target.value)} />
+                  <ul className="list-group">
+                    {filteredTechs.map(t => (
+                      <li key={t._id} className="list-group-item d-flex justify-content-between align-items-center">
+                        {t.name} ({t.email})
+                        <button className="btn btn-sm btn-danger" onClick={() => deleteUser(t._id, "technician")}>Delete</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="col-md-6">
+                  <h5>Clients</h5>
+                  <input type="text" className="form-control mb-2" placeholder="Search client..." value={clientSearch} onChange={(e) => setClientSearch(e.target.value)} />
+                  <ul className="list-group">
+                    {filteredClients.map(c => (
+                      <li key={c._id} className="list-group-item d-flex justify-content-between align-items-center">
+                        {c.name} ({c.email})
+                        <button className="btn btn-sm btn-danger" onClick={() => deleteUser(c._id, "client")}>Delete</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "open" && openServices.map(s => (
+              <div key={s._id} className="card mb-3">
+                <div className="card-body">
+                  <p><strong>Client:</strong> {s.client?.name}</p>
+                  <p><strong>Description:</strong> {s.description}</p>
+                  <div className="d-flex align-items-center gap-2">
+                    <select className="form-select" value={assigning[s._id] || ""} onChange={(e) => setAssigning((prev) => ({ ...prev, [s._id]: e.target.value }))}>
+                      <option value="">Select Technician</option>
+                      {technicians.map(t => (
+                        <option key={t._id} value={t._id}>{t.name}</option>
+                      ))}
+                    </select>
+                    <button className="btn btn-primary" onClick={() => assignTechnician(s._id)}>Assign</button>
+                  </div>
+                  <button className="btn btn-outline-danger btn-sm mt-2" onClick={() => deleteServiceRequest(s._id)}>
+                    Delete Request
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {activeTab === "assigned" && assignedServices.map(s => (
+              <div key={s._id} className="card mb-3">
+                <div className="card-body">
+                  <p><strong>Client:</strong> {s.client?.name}</p>
+                  <p><strong>Description:</strong> {s.description}</p>
+                  <p><strong>Technician:</strong> {s.technician?.name}</p>
+                  <button className="btn btn-outline-danger btn-sm mt-2" onClick={() => deleteServiceRequest(s._id)}>
+                    Delete Request
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {activeTab === "completed" && completedServices.map(s => (
+              <div key={s._id} className="card mb-3">
+                <div className="card-body">
+                  <p><strong>Client:</strong> {s.client?.name}</p>
+                  <p><strong>Description:</strong> {s.description}</p>
+                  <p><strong>Technician:</strong> {s.technician?.name}</p>
+                  <p><strong>Status:</strong> {s.status}</p>
+                </div>
+              </div>
+            ))}
+
+            {activeTab === "feedback" && feedbacks.map(f => (
+              <div key={f._id} className="card mb-3">
+                <div className="card-body">
+                  <p><strong>Client:</strong> {f.client?.name}</p>
+                  <p><strong>Technician:</strong> {f.technician?.name}</p>
+                  <p><strong>Rating:</strong> {"⭐".repeat(f.rating)}</p>
+                  <p><strong>Comment:</strong> {f.feedback || "No comment"}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </>
       )}
     </div>

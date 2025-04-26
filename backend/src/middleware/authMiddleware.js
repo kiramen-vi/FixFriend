@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+
 const protect = async (req, res, next) => {
   let token;
 
   if (req.headers.authorization) {
     const parts = req.headers.authorization.split(' ');
-    token = parts.length === 2 ? parts[1] : parts[0]; // supports both 'Bearer token' and just 'token'
+    token = parts.length === 2 ? parts[1] : parts[0];
   }
 
   if (!token) {
@@ -21,7 +22,6 @@ const protect = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    
     req.user = {
       id: user._id.toString(),
       name: user.name,
@@ -36,10 +36,12 @@ const protect = async (req, res, next) => {
   }
 };
 
+
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') return next();
   res.status(403).json({ message: 'Not authorized as admin' });
 };
+
 
 const isTechnician = (req, res, next) => {
   if (req.user && req.user.role === 'technician') return next();
