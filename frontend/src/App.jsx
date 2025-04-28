@@ -25,7 +25,7 @@ function RoleBasedRedirect() {
     case "admin":
       return <Navigate to="/admin-dashboard" replace />;
     case "client":
-      return <Navigate to="/client-intro" replace />; // 🔁 updated
+      return <Navigate to="/client-intro" replace />; 
     case "technician":
       return <Navigate to="/technician-dashboard" replace />;
     default:
