@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const User = require('./src/models/User'); // ✅ fixed path
-const connectDB = require('./src/config/db'); // ✅ fixed path
+const User = require('./src/models/User'); 
+const connectDB = require('./src/config/db');
 
 dotenv.config();
 connectDB();
@@ -18,10 +18,10 @@ const seedAdmin = async () => {
     });
 
     await admin.save();
-    console.log('✅ Admin seeded with password: admin123');
+    console.log(' Admin seeded with password: admin123');
     process.exit();
   } catch (error) {
-    console.error('❌ Seeding failed:', error.message);
+    console.error(' Seeding failed:', error.message);
     process.exit(1);
   }
 };
