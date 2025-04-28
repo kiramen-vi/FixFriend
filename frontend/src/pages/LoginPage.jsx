@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`, // 👈 you add /api here
+        `${import.meta.env.VITE_API_URL}/api/auth/login`, 
         credentials,
         { withCredentials: true }
       );
